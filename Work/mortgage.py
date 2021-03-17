@@ -22,8 +22,7 @@ while principal > 0:
         principal = 0
 
     total_paid += current_payment
+    print(f'{month:10d} {total_paid:10.2f} {principal:10.2f}')
 
-    print(month, round(total_paid, 2), round(principal, 2))
-
-print('Total paid', round(total_paid, 2))
+print(f'Total paid ${total_paid:0.2f}')
 print('Months', month)
