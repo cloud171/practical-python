@@ -10,15 +10,19 @@ def read_portfolio(filename: str) -> list:
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares and prices.[]
     '''
-    return fileparse.parse_csv('Data/portfolio.csv',select=['name','shares','price'], types=[str,int,float])
+    with open(filename) as lines:
+        portfolio = fileparse.parse_csv(lines,select=['name','shares','price'], types=[str,int,float])
+
+    return portfolio
 
 def read_prices(filename):
     prices = {}
-    rows = fileparse.parse_csv('Data/prices.csv', types=[str,float], has_headers=False)
-    for row in rows:
-        if row:
-            name, price = row
-            prices[name] = price
+    with open(filename) as lines:
+        rows = fileparse.parse_csv(lines, types=[str,float], has_headers=False)
+        for row in rows:
+            if row:
+                name, price = row
+                prices[name] = price
 
     return prices
 

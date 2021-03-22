@@ -8,7 +8,8 @@ import sys
 import fileparse
 
 def portfolio_cost(filename):
-    rows = fileparse.parse_csv(filename, select=['name','shares','price'], types=[str,int,float])
+    with open(filename) as lines:
+        rows = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
     total = 0
 
     for row_idx, row in enumerate(rows):
