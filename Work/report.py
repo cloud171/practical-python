@@ -4,6 +4,7 @@
 # Exercise 2.4
 import fileparse
 import csv
+import stock
 
 def read_portfolio(filename: str) -> list:
     '''
@@ -11,7 +12,8 @@ def read_portfolio(filename: str) -> list:
     name, shares and prices.[]
     '''
     with open(filename) as lines:
-        portfolio = fileparse.parse_csv(lines,select=['name','shares','price'], types=[str,int,float])
+        pdict = fileparse.parse_csv(lines,select=['name','shares','price'], types=[str,int,float])
+        portfolio = [ stock.Stock(d['name'], d['shares'], d['price']) for d in pdict ]
 
     return portfolio
 
@@ -29,7 +31,7 @@ def read_prices(filename):
 def make_report(portfolio, prices):
     price_change = []
     for stock in portfolio:
-        row = (stock['name'], int(stock['shares']), float(prices[stock['name']]), float(stock['price']) - float(prices[stock['name']]))
+        row = (stock.name, int(stock.shares), float(prices[stock.name]), float(stock.price) - float(prices[stock.name]))
         price_change.append(row)
 
     return price_change
@@ -48,8 +50,8 @@ def print_portfolio_value(portfolio: list, prices: list):
     portfolio_value = 0.0
     current_value = 0.0
     for stock in portfolio:
-        portfolio_value += float(stock['shares']) * float(stock['price'])
-        current_value += float(stock['shares']) * float(prices[stock['name']])
+        portfolio_value += float(stock.shares) * float(stock.price)
+        current_value += float(stock.shares) * float(prices[stock.name])
 
 
     print('Portfolio value:', portfolio_value)
