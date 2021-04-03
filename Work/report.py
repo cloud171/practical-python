@@ -5,6 +5,7 @@
 import fileparse
 import csv
 import stock
+import tableformat
 
 def read_portfolio(filename: str) -> list:
     '''
@@ -36,15 +37,14 @@ def make_report(portfolio, prices):
 
     return price_change
 
-def print_report(report: list):
+def print_report(reportdata: list, formatter):
     """
     Print the report
     """
-    headers = ('Name', 'Shares', 'Price', 'Change')
-    print('%10s %10s %10s %10s' % headers)
-    print('---------- ---------- ---------- -----------')
-    for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d}  ${price:>10.2f} {change:>10.2f}')
+    formatter.headings([ 'Name', 'Shares', 'Price', 'Change' ])
+    for name, shares, price, change in reportdata:
+        rowdata = [ name, str(shares), f'{price:0.2f}', f'{change:0.2f}' ]
+        formatter.row(rowdata)
 
 def print_portfolio_value(portfolio: list, prices: list):
     portfolio_value = 0.0
@@ -63,13 +63,16 @@ def portfolio_report(portfolio_name: str, price_name: str):
     prices = read_prices(price_name)
 
     report = make_report(portfolio, prices)
-    print_report(report)
+
+    formatter = tableformat.HTMLTableFormatter()
+    print_report(report, formatter)
     print_portfolio_value(portfolio, prices)
 
 def main(argv):
     if len(argv) != 3:
         raise SystemExit(f'Usage: {argv[0]} ' 'portfolio_file price_file')
     portfile = argv[1]
+
     pricefile = argv[2]
     portfolio_report(portfile, pricefile)
 
