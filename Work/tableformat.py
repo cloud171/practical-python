@@ -14,6 +14,18 @@ class TableFormatter:
         Emit a single row of table data
         '''
         raise NotImplementedError()
+    
+def create_formatter(name):
+  if name == 'txt':
+    formatter = TextTableFormatter()
+  elif name == 'csv':
+    formatter = CSVTableFormatter()
+  elif name == 'html':
+    formatter = HTMLTableFormatter()
+  else:
+    raise RuntimeError(f'Unknown format {fmt}')
+  
+  return formatter
 
 class TextTableFormatter(TableFormatter):
     '''

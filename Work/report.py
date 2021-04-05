@@ -58,23 +58,24 @@ def print_portfolio_value(portfolio: list, prices: list):
     print('Current value:', current_value)
     print('Gain / Loss', portfolio_value - current_value)
 
-def portfolio_report(portfolio_name: str, price_name: str):
+def portfolio_report(portfolio_name: str, price_name: str, fmt='txt'):
     portfolio = read_portfolio(portfolio_name)
     prices = read_prices(price_name)
 
     report = make_report(portfolio, prices)
 
-    formatter = tableformat.HTMLTableFormatter()
+    formatter = tableformat.create_formatter(fmt)
     print_report(report, formatter)
     print_portfolio_value(portfolio, prices)
 
 def main(argv):
-    if len(argv) != 3:
-        raise SystemExit(f'Usage: {argv[0]} ' 'portfolio_file price_file')
+    if len(argv) != 4:
+        raise SystemExit(f'Usage: {argv[0]} ' 'portfolio_file price_file format')
     portfile = argv[1]
 
     pricefile = argv[2]
-    portfolio_report(portfile, pricefile)
+    fmt = argv[3]
+    portfolio_report(portfile, pricefile, fmt)
 
 if __name__ == '__main__':
     import sys
