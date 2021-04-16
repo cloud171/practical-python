@@ -2,6 +2,9 @@
 # tableformat.py
 #
 
+class FormatError(Exception):
+	pass
+
 class TableFormatter:
     def headings(self, headers):
         '''
@@ -23,9 +26,19 @@ def create_formatter(name):
   elif name == 'html':
     formatter = HTMLTableFormatter()
   else:
-    raise RuntimeError(f'Unknown format {fmt}')
+    raise FormatError(f'Unknown format {name}')
   
   return formatter
+
+def print_table(portfolio, columns, formatter):
+    formatter.headings(columns)
+    for stock in portfolio:
+        rowdata = []
+        for colname in columns:
+            rowdata.append(str(getattr(stock, colname)))
+        formatter.row(rowdata)
+
+
 
 class TextTableFormatter(TableFormatter):
     '''

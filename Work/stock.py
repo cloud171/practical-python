@@ -1,17 +1,32 @@
 class Stock:
     def __init__(self, name, shares, price):
         self.name = name
-        self.shares = shares
+        self._shares = shares
         self.price = price
 
+    def __repr__(self):
+        return f'Stock(\'{self.name}\', {self._shares}, {self.price}'
+
+    @property
     def cost(self):
-        print(self.shares * self.price)
+        print(self._shares * self.price)
 
     def sell(self, amount):
-        if amount > self.shares:
-            print('Error: Amount is greater than available shares:', self.shares)
+        if amount > self._shares:
+            print('Error: Amount is greater than available shares:', self._shares)
             return
-        self.shares -= amount
+        self._shares -= amount
+
+    @property
+    def shares(self):
+        return self._shares
+
+    @shares.setter
+    def shares(self, value):
+        if not isinstance(value, int):
+            raise TypeError('Expected int')
+        self._shares = value
+    
 
 class MyStock(Stock):
 
@@ -20,7 +35,7 @@ class MyStock(Stock):
         self.factor = factor
 
     def panic(self):
-        self.sell(self.shares)
+        self.sell(self._shares)
 
     def cost(self):
         actual_cost = super().cost()
