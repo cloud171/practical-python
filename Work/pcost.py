@@ -7,20 +7,11 @@ import csv
 import sys
 import fileparse
 import stock
+import report
 
 def portfolio_cost(filename):
-    with open(filename) as lines:
-        parsed = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
-        rows = [ stock.Stock(d['name'], d['shares'], d['price']) for d in parsed ]
-    total = 0
-
-    for row_idx, row in enumerate(rows):
-        try:
-            total += row.shares * row.price
-        except ValueError:
-            print(f'Row {row_idx + 1}: Couldn\'t convert: {row}');
-
-    return total;
+    portfolio = report.read_portfolio(filename)
+    return portfolio.total_cost
 
 def main(argv):
     if len(argv) == 2:

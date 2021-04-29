@@ -12,6 +12,7 @@
 
 import math
 import time
+import sys
 
 history_file = "dowstocks.csv"
 
@@ -178,6 +179,3 @@ m.register(BasicPrinter())
 m.register(LogPrinter("stocklog.csv"))
 
 m.run(1)
-
-
-   
